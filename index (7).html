@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cerebelo NeuroMaravilla — Programa Diario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sage: #8A9A80;
+    --sage-dark: #6B7A62;
+    --terracotta: #C1694F;
+    --terracotta-dark: #A6543C;
+    --cream: #F7F3EC;
+    --cream-deep: #EFE8DA;
+    --ink: #3A3630;
+    --ink-soft: #6B6459;
+    --line: #E1D9C8;
+    --done: #8A9A80;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap{
+    max-width:480px;
+    margin:0 auto;
+    padding:28px 20px 60px;
+  }
+  header{
+    margin-bottom: 28px;
+  }
+  .eyebrow{
+    font-size:13px;
+    color:var(--terracotta-dark);
+    font-weight:600;
+    letter-spacing:0.02em;
+    margin-bottom:6px;
+  }
+  h1{
+    font-family:'Playfair Display', serif;
+    font-size:28px;
+    font-weight:600;
+    line-height:1.2;
+    margin:0 0 10px;
+    color:var(--ink);
+  }
+  .lede{
+    font-size:15px;
+    color:var(--ink-soft);
+    line-height:1.5;
+    margin:0;
+  }
+  .progress-band{
+    margin-top:22px;
+    background:white;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .progress-band .num{
+    font-family:'Playfair Display', serif;
+    font-size:26px;
+    color:var(--sage-dark);
+    font-weight:600;
+  }
+  .progress-band .label{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:2px;
+  }
+  .progress-bar-outer{
+    flex:1;
+    height:6px;
+    background:var(--cream-deep);
+    border-radius:99px;
+    margin-left:18px;
+    overflow:hidden;
+  }
+  .progress-bar-inner{
+    height:100%;
+    background:var(--sage);
+    border-radius:99px;
+    transition: width 0.4s ease;
+  }
+  .week{
+    margin-top:32px;
+  }
+  .week-title{
+    font-family:'Playfair Display', serif;
+    font-size:18px;
+    font-weight:600;
+    margin: 0 0 4px;
+  }
+  .week-focus{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin: 0 0 14px;
+  }
+  .days{
+    display:grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap:8px;
+  }
+  .day{
+    aspect-ratio: 1;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:white;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:var(--ink);
+    position:relative;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .day:active{
+    transform: scale(0.96);
+  }
+  .day .d-num{
+    font-size:15px;
+    font-weight:600;
+  }
+  .day .d-label{
+    font-size:9px;
+    color:var(--ink-soft);
+    margin-top:2px;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+  }
+  .day.done{
+    background: var(--sage);
+    border-color: var(--sage);
+  }
+  .day.done .d-num, .day.done .d-label{
+    color:white;
+  }
+  .day.today{
+    border:2px solid var(--terracotta);
+  }
+  .day.locked{
+    opacity:0.4;
+    pointer-events:none;
+  }
+  .day .check{
+    position:absolute;
+    top:4px;
+    right:4px;
+    font-size:9px;
+  }
+  footer{
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size:12.5px;
+    color:var(--ink-soft);
+    line-height:1.6;
+  }
+  footer strong{
+    color:var(--ink);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Método NeuroMaravilla™</div>
+    <h1>🦁 La Selva de Mara</h1>
+    <p class="lede">Cada día una nueva misión en la selva: 15 minutos de juego que entrenan ritmo, equilibrio y coordinación.</p>
+
+    <div class="progress-band">
+      <div>
+        <div class="num" id="progress-num">0/28</div>
+        <div class="label">días completados</div>
+      </div>
+      <div class="progress-bar-outer">
+        <div class="progress-bar-inner" id="progress-bar" style="width:0%"></div>
+      </div>
+    </div>
+  </header>
+
+  <div id="weeks-container"></div>
+
+  <footer>
+    <strong>Cómo jugar:</strong> toca el día de hoy para empezar la misión de la selva. Al terminar, márcala como completada y quedará guardada aquí. Si un día no se puede, no pasa nada — la selva te espera al siguiente.
+  </footer>
+
+</div>
+
+<script>
+  const WEEKS = [
+    { title: "Semana 1 · 🐘", focus: "Despertar de la selva" },
+    { title: "Semana 2 · 🐒", focus: "Los monos cruzan el río" },
+    { title: "Semana 3 · 🦩", focus: "El equilibrista de la selva" },
+    { title: "Semana 4 · 🦁", focus: "La misión completa" },
+  ];
+  const DAY_LABELS = ["L","M","X","J","V","S","D"];
+  const STORAGE_KEY = "cerebelo_nm_progress";
+
+  function getProgress(){
+    try{
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    }catch(e){ return {}; }
+  }
+  function saveProgress(p){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
+  }
+
+  function todayIndex(){
+    let start = localStorage.getItem("cerebelo_nm_start");
+    if(!start){
+      start = new Date().toISOString().slice(0,10);
+      localStorage.setItem("cerebelo_nm_start", start);
+    }
+    const startDate = new Date(start + "T00:00:00");
+    const now = new Date();
+    const diffDays = Math.floor((now - startDate) / (1000*60*60*24));
+    return diffDays;
+  }
+
+  function render(){
+    const progress = getProgress();
+    const todayIdx = todayIndex();
+    const container = document.getElementById("weeks-container");
+    container.innerHTML = "";
+    let completedCount = 0;
+
+    WEEKS.forEach((week, wIdx) => {
+      const weekEl = document.createElement("div");
+      weekEl.className = "week";
+      weekEl.innerHTML = `<div class="week-title">${week.title}</div><div class="week-focus">${week.focus}</div>`;
+      const daysEl = document.createElement("div");
+      daysEl.className = "days";
+
+      for(let d = 0; d < 7; d++){
+        const dayNum = wIdx * 7 + d + 1;
+        const isDone = !!progress[dayNum];
+        const isToday = dayNum - 1 === todayIdx;
+        const isLocked = dayNum - 1 > todayIdx;
+        if(isDone) completedCount++;
+
+        const a = document.createElement("a");
+        a.href = isLocked ? "#" : `dia.html?d=${dayNum}`;
+        a.className = "day" + (isDone ? " done" : "") + (isToday ? " today" : "") + (isLocked ? " locked" : "");
+        a.innerHTML = `
+          <span class="d-num">${dayNum}</span>
+          <span class="d-label">${DAY_LABELS[d]}</span>
+          ${isDone ? '<span class="check">✓</span>' : ''}
+        `;
+        daysEl.appendChild(a);
+      }
+      weekEl.appendChild(daysEl);
+      container.appendChild(weekEl);
+    });
+
+    document.getElementById("progress-num").textContent = `${completedCount}/28`;
+    document.getElementById("progress-bar").style.width = `${(completedCount/28)*100}%`;
+  }
+
+  render();
+</script>
+
+</body>
+</html>
